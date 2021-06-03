@@ -21,7 +21,10 @@ function createWindow(){
     let updater = new BrowserWindow({
         backgroundColor: '#fff', // always set a bg color to enable font antialiasing!
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
+
         },
         width: 450,
         height: 600,
@@ -54,7 +57,9 @@ function createWindow(){
             let mainWindow = new BrowserWindow({
                 backgroundColor: '#fff', // always set a bg color to enable font antialiasing!
                 webPreferences: {
-                    nodeIntegration: true
+                    nodeIntegration: true,
+                    contextIsolation: false,
+                    enableRemoteModule: true,
                 },
                 width: 950,
                 height: 600,
@@ -101,7 +106,9 @@ function createWindow(){
             let mainWindow = new BrowserWindow({
                 backgroundColor: '#fff', // always set a bg color to enable font antialiasing!
                 webPreferences: {
-                    nodeIntegration: true
+                    nodeIntegration: true,
+                    contextIsolation: false,
+                    enableRemoteModule: true,
                 },
                 width: 800,
                 height: 600,
