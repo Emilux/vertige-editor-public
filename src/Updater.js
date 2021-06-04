@@ -16,6 +16,10 @@ class Updater extends Component {
 
     render() {
         const { match, location, history } = this.props;
+        console.log(ipcRenderer)
+        ipcRenderer.on('oui', (event, args) =>{
+            console.log(`error update : ${args}`);
+        });
         ipcRenderer.on('update_error', (event, args) =>{
             ipcRenderer.removeAllListeners('update_error');
             this.setState({message:`Erreur durant la mise à jour : ${args}`});

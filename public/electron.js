@@ -51,7 +51,7 @@ function createWindow(){
     )
 
     updater.webContents.on('did-finish-load', ()=>{
-        if (isDev){
+        if (isDev || !isDev){
             // Create the browser window.
 
             let mainWindow = new BrowserWindow({
@@ -62,7 +62,7 @@ function createWindow(){
                     enableRemoteModule: true,
                 },
                 width: 950,
-                height: 600,
+                height: 800,
                 minWidth: 200,
                 minHeight: 500,
                 frame: false
@@ -74,35 +74,50 @@ function createWindow(){
                 isDev ? "http://localhost:3000#/home" : pathHome
             );
 
+
             // Open the DevTools.
             if (isDev) mainWindow.webContents.openDevTools()
+            updater.close();
+
+
 
         }
-        autoUpdater.on('error', (event) => {
+
+        /**
+         * @todo auto-updater bloqué sur l'ecran de chargement
+         */
+        /*
+        updater.webContents.send('oui', 'oui');
+        await autoUpdater.on('error', (event) => {
             updater.webContents.send('update_error', event);
+            updater.webContents.send('oui', 'update_error');
         });
-        autoUpdater.on('checking-for-update', () => {
+        await autoUpdater.on('checking-for-update', () => {
             updater.webContents.send('update_check');
+            updater.webContents.send('oui', 'update_check');
         });
 
-        autoUpdater.on('update-available', () => {
+        await autoUpdater.on('update-available', () => {
             updater.webContents.send('update_available');
+            updater.webContents.send('oui', 'update_available');
             console.log("update available");
         });
 
-        autoUpdater.on('update-downloaded', () => {
+        await autoUpdater.on('update-downloaded', () => {
             updater.webContents.send('update_downloaded');
+            updater.webContents.send('oui', 'update_downloaded');
             autoUpdater.quitAndInstall();
             console.log("update available");
         });
 
-        autoUpdater.on('before-quit-for-update', () => {
+        await autoUpdater.on('before-quit-for-update', () => {
+            updater.webContents.send('oui', 'before-quit-for-update');
             app.relaunch();
         })
 
-        autoUpdater.on('update-not-available', () => {
+        await autoUpdater.once('update-not-available', () => {
             // Create the browser window.
-
+            updater.webContents.send('oui', 'update-not-available');
             let mainWindow = new BrowserWindow({
                 backgroundColor: '#fff', // always set a bg color to enable font antialiasing!
                 webPreferences: {
@@ -127,16 +142,16 @@ function createWindow(){
             mainWindow.webContents.openDevTools();
             updater.close();
             console.log("update not available");
-        });
+        });*/
     });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', () => {
+app.once('ready', () => {
     if (!isDev){
-        autoUpdater.checkForUpdatesAndNotify();
+        autoUpdater.checkForUpdatesAndNotify().then();
     }
 
     createWindow();
